@@ -3,6 +3,7 @@
 OS=$(lsb_release -si);
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 DIST="";
+ARCH=$(uname -m);
 
 if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian" ]; then
     DIST="deb";
@@ -13,7 +14,16 @@ else
     exit;
 fi
 
-URLBASE="https://code.visualstudio.com/sha/download?build=stable&os=linux-${DIST}-x64";
+if [ "$ARCH" = "x86_64" ]; then
+    ARCH="x64";
+elif [ "$ARCH" = "aarch64" ]; then
+    ARCH="arm64";
+else
+    echo "Unfortunately your architecture is not supported in distributed packages.";
+    exit;
+fi
+
+URLBASE="https://code.visualstudio.com/sha/download?build=stable&os=linux-${DIST}-${ARCH}";
 FILENAME="$DIR/latest.${DIST}";
 
 if test -e "$FILENAME"; then
