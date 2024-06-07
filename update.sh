@@ -5,11 +5,26 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 DIST="";
 ARCH=$(uname -m);
 
+if [ -f /etc/os-release ]; then
+    source /etc/os-release
+    # ^ If not ubuntu but is Ubuntu-based, may contain:
+    # UBUNTU_CODENAME=jammy
+    # ^ (if set at all, it is Ubuntu-based). However, the more standard variable is:
+    # ID_LIKE="ubuntu debian"
+    for name in $ID_LIKE; do
+        if [ "$name" = "ubuntu" ]; then
+            DIST="deb";
+        elif [ "$name" = "debian" ]; then
+            DIST="deb";
+        fi
+    done
+fi
+
 if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian" ]; then
     DIST="deb";
 elif [ "$OS" = "Fedora" ] || [ "$OS" = "Red Hat" ] || [ "$OS" = "Red hat" ]; then
     DIST="rpm";
-else
+elif [ -z "$DIST" ]; then
     echo "Unfortunately your operating system is not supported in distributed packages.";
     exit;
 fi
