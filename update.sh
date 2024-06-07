@@ -11,13 +11,15 @@ if [ -f /etc/os-release ]; then
     # UBUNTU_CODENAME=jammy
     # ^ (if set at all, it is Ubuntu-based). However, the more standard variable is:
     # ID_LIKE="ubuntu debian"
-    for name in $ID_LIKE; do
-        if [ "$name" = "ubuntu" ]; then
-            DIST="deb";
-        elif [ "$name" = "debian" ]; then
-            DIST="deb";
-        fi
-    done
+    if [ ! -z "$ID_LIKE" ]; then
+        for name in $ID_LIKE; do
+            if [ "$name" = "ubuntu" ]; then
+                DIST="deb";
+            elif [ "$name" = "debian" ]; then
+                DIST="deb";
+            fi
+        done
+    fi
 fi
 
 if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian" ]; then
