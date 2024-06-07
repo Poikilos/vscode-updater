@@ -47,8 +47,11 @@ echo "vscode instance(s) closed.";
 echo "Installing latest version...";
 if [ "$DIST" = "deb" ]; then
     sudo dpkg -i $FILENAME;
+    sudo apt-get update
+    sudo apt-get install -f -y  # -f: install dependencies
 else
-    sudo rpm -i $FILENAME;
+    # sudo rpm -i $FILENAME;
+    yum --nogpgcheck localinstall $FILENAME;  # Install and get dependencies
 fi
 echo "Installation finished.";
 
