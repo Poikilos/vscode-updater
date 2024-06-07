@@ -66,7 +66,11 @@ if [ "$DIST" = "deb" ]; then
     sudo apt-get install -f -y  # -f: install dependencies
 else
     # sudo rpm -i $FILENAME;
-    yum --nogpgcheck localinstall $FILENAME;  # Install and get dependencies
+    dep_resolver="yum"
+    if [ -f "`command -v dnf`" ]; then
+        dep_resolver="dnf"
+    fi
+    $dep_resolver --nogpgcheck localinstall $FILENAME;  # Install and get dependencies
 fi
 echo "Installation finished.";
 
