@@ -2,6 +2,15 @@
 
 OS=$(lsb_release -si);
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+TMP=/tmp
+
+if [ -w "$DIR" ]; then
+    echo "Downloading to $DIR";
+else
+    echo "$DIR not writable. Using $TMP";
+    DIR="$TMP";
+fi;
+
 DIST="";
 ARCH=$(uname -m);
 
